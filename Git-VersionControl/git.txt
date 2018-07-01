@@ -1,0 +1,90 @@
+Git is my prefered version control.
+
+I use both Github, Gitlab, dockerhub, (bitbucket-but only for requested projects) as my clients. Here, I will demonstrate how
+to create a new project from scratch and how to perform
+your first commit on UNIX-based systems. From there we will use git logs to find any particular
+commit that we want based on our requirements.
+
+1) Create a new project:
+  Start by creating a new project by opening up your terminal
+  or command line. Change dirtectory to where you keep your projects, I keep mine in ~/DevWork.
+    - cd ~/DevWork
+
+2) Name & create the project and change directory into it:
+    - mkdir myNewProject && cd myNewProject
+
+3) inside the project I usually start with creating a README.md and .gitgnore(for tracking) files(.gitignore will be different depending on your env and project components)
+  - echo 'Simple app to accomplish something' > README.md
+  - echo '
+         /node_modules \n
+         bundle.js     \n
+         npm-debug.log \n
+         .DS_Store     \n
+
+         # IntelliJ    \n
+         *.iml         \n
+         /.idea        \n
+
+         # dotenv environment variables file /n
+         .env \n
+
+         #autosaved files \n
+         *~
+' > .gitgnore
+
+4) Now we will make this a git project by running the following in the project root directory:
+   -- this will create a .git directory in the root of the project --
+    -git init
+
+5) Great, now we can check to see what files, if any, are being tracked by git with this command:
+   - git status
+   -- the output should give you this
+   On branch master
+
+   Initial commit
+
+   Untracked files:
+     (use "git add <file>..." to include in what will be committed)
+
+          .gitgnore
+          README.md
+
+    --This says that git sees the changes to our project
+
+6) Now we can commit our changes so they are saved.
+   (we can add the files to be saved a few ways but for this we will add them all)
+   - git add .
+   (*this adds all of the files that git notices as changed)
+
+   (now we make the commit with a message for other users/viewers of the project with the -m flag)
+   -git commit -m 'Initial Commit, README and gitignore files'
+
+If you want to view previous commits you can by using the (git logs) command
+I will show you a few ways to find commits of interest
+
+--This will return a prettified graph of the commit history and you can tac on a '| grep <query>' on the end to find
+commits of interest:
+git log --graph --oneline --author-date-order --pretty=format:"%ad %h by %an, %s" --date=iso | sort -r
+
+--This will return a formatted list of commits sorted by date s with the author, date, and commit message(hence why its important to leave a proper commit message)
+git log --author-date-order
+
+-- this is my favorite, it returns a nice graph- tree
+git log --graph --oneline --all
+git log --graph --pretty=oneline --abbrev-commit
+*Note: if you get some weird letters you can run this command to fix:
+export LESS="-R"
+
+
+I have included a script I use to create my git repos from the command line. Who has time to go to github to create a repo:
+
+#!/bin/bash
+user="$1"
+reponame="$2"
+if [ "$user" = ""  ]; then
+read -p "Enter Github username: " user
+fi
+if [ "$reponame" = ""  ]; then
+read -p "Enter Github Repository Name: " reponame
+fi
+curl -u "$user" https://api.github.com/user/repos -d "{\"name\":\"$reponame\"}"
