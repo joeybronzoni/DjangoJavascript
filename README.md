@@ -16,7 +16,3 @@ python manage.py runserver
 
 
 
-*Note to Brian*
-I really could do this. I might be a little shakey with SQL querys as far as Joins go but
-thats a skill that can built up quickly . I wanted to show you that I understand how python/django
-works and the things that can be done, hence the full app (almost anyway). I
